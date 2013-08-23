@@ -1,0 +1,152 @@
+<html>
+  <body onLoad="initialize()">
+    <h1>Name the Square</h1>
+
+    <p>Name the highlighted square on the chessboard.</p>
+
+    <table id="board" border="1">
+      <tr>
+        <td width="50px" height="50px"></td>
+        <td width="50px" height="50px"></td>
+        <td width="50px" height="50px"></td>
+        <td width="50px" height="50px"></td>
+        <td width="50px" height="50px"></td>
+        <td width="50px" height="50px"></td>
+        <td width="50px" height="50px"></td>
+        <td width="50px" height="50px"></td>
+      </tr>
+      <tr>
+        <td width="50px" height="50px"></td>
+        <td width="50px" height="50px"></td>
+        <td width="50px" height="50px"></td>
+        <td width="50px" height="50px"></td>
+        <td width="50px" height="50px"></td>
+        <td width="50px" height="50px"></td>
+        <td width="50px" height="50px"></td>
+        <td width="50px" height="50px"></td>
+      </tr>
+      <tr>
+        <td width="50px" height="50px"></td>
+        <td width="50px" height="50px"></td>
+        <td width="50px" height="50px"></td>
+        <td width="50px" height="50px"></td>
+        <td width="50px" height="50px"></td>
+        <td width="50px" height="50px"></td>
+        <td width="50px" height="50px"></td>
+        <td width="50px" height="50px"></td>
+      </tr>
+      <tr>
+        <td width="50px" height="50px"></td>
+        <td width="50px" height="50px"></td>
+        <td width="50px" height="50px"></td>
+        <td width="50px" height="50px"></td>
+        <td width="50px" height="50px"></td>
+        <td width="50px" height="50px"></td>
+        <td width="50px" height="50px"></td>
+        <td width="50px" height="50px"></td>
+      </tr>
+      <tr>
+        <td width="50px" height="50px"></td>
+        <td width="50px" height="50px"></td>
+        <td width="50px" height="50px"></td>
+        <td width="50px" height="50px"></td>
+        <td width="50px" height="50px"></td>
+        <td width="50px" height="50px"></td>
+        <td width="50px" height="50px"></td>
+        <td width="50px" height="50px"></td>
+      </tr>
+      <tr>
+        <td width="50px" height="50px"></td>
+        <td width="50px" height="50px"></td>
+        <td width="50px" height="50px"></td>
+        <td width="50px" height="50px"></td>
+        <td width="50px" height="50px"></td>
+        <td width="50px" height="50px"></td>
+        <td width="50px" height="50px"></td>
+        <td width="50px" height="50px"></td>
+      </tr>
+      <tr>
+        <td width="50px" height="50px"></td>
+        <td width="50px" height="50px"></td>
+        <td width="50px" height="50px"></td>
+        <td width="50px" height="50px"></td>
+        <td width="50px" height="50px"></td>
+        <td width="50px" height="50px"></td>
+        <td width="50px" height="50px"></td>
+        <td width="50px" height="50px"></td>
+      </tr>
+      <tr>
+        <td width="50px" height="50px"></td>
+        <td width="50px" height="50px"></td>
+        <td width="50px" height="50px"></td>
+        <td width="50px" height="50px"></td>
+        <td width="50px" height="50px"></td>
+        <td width="50px" height="50px"></td>
+        <td width="50px" height="50px"></td>
+        <td width="50px" height="50px"></td>
+      </tr>
+    </table>
+
+    <p>Your answer (press Enter to submit): <input id="answer" type="text"></input></p>
+
+    <script src="jquery-1.10.2.min.js">
+    </script>
+
+    <script>
+      $("#answer").keyup(function(event) {
+        if (event.keyCode == 13) {
+          processAnswer();
+        }
+      });
+      var highlightedSquare;
+      function initialize(flipped) {
+        initializeTable(flipped);
+        highlightRandomSquare();
+      }
+      var flipped = false;
+      function initializeTable() {
+        // TODO: is it possible to do everything here in jQuery?
+        var rows = $("#board tr");
+        for (var i = 0; i < 8; ++i) {
+          for (var j = 0; j < 8; ++j) {
+            var color = (i % 2) == (j % 2) ? "white" : "black";
+            var coord = "abcdefgh"[j] + (8-i);
+            //console.debug(coord);
+            rows[i].children[j].style.backgroundColor = color;
+            rows[i].children[j].setAttribute("id", coord);
+          }
+        }
+      }
+      /**
+       * http://stackoverflow.com/questions/1527803/generating-random-numbers-in-javascript-in-a-specific-range
+       * Returns a random integer between min and max (inclusive).
+       * Using Math.round() will give you a non-uniform distribution!
+       */
+      function getRandomInt(min, max) {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+      }
+      function highlightRandomSquare() {
+        var rand1 = getRandomInt(0,7);
+        var rand2 = getRandomInt(0,7);
+        highlightedSquare = "abcdefgh"[rand1] + "12345678"[rand2];
+        $("#" + highlightedSquare).css("background-color", "#0000ff");
+      }
+      function processAnswer() {
+        var actual = $("#answer").val();
+        //console.debug(actual);
+        if (actual == highlightedSquare) {
+          $("#" + highlightedSquare).css("background-color", "#00ff00");
+        } else {
+          $("#" + highlightedSquare).css("background-color", "#ff0000");
+        }
+        setTimeout(function() {
+            initializeTable(false);
+            highlightRandomSquare();
+            $("#answer").val("");
+          }, 
+          500
+        );
+      }
+    </script>
+  </body>
+</html>
